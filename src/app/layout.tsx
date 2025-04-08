@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {search}
-        <div className='flex flex-col items-center justify-center w-full h-screen'>
+        <div className='flex flex-col items-center justify-center w-full min-h-screen'>
           {children}
         </div>
       </body>
