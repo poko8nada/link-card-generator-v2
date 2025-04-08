@@ -1,6 +1,7 @@
 'use client'
 import { SubmitBtn } from '@/components/submit-btn'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useActionState } from 'react'
 import { validateUrl } from './action'
@@ -50,7 +51,12 @@ export default function SearchForm() {
       <div className='flex flex-col w-full'>
         <Input
           placeholder='example.com'
-          className='w-full'
+          className={cn(
+            'w-full',
+            state.error.length
+              ? '!border-red-500 focus:!ring-1 focus:!ring-red-500 focus:!border-red-500 !ring-red-500'
+              : '',
+          )}
           name='url'
           defaultValue={state.url}
         />
