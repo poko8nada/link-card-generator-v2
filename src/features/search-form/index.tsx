@@ -13,7 +13,6 @@ export default function SearchForm() {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleSubmit = async (_: any, formdata: FormData) => {
     const { url, error } = validateUrl(formdata)
-
     if (error.length) {
       return {
         url: '',
