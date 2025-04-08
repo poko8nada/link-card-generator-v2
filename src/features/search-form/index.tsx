@@ -20,6 +20,13 @@ export default function SearchForm() {
       }
     }
 
+    if (initialUrl === url) {
+      return {
+        url: url,
+        error: [],
+      }
+    }
+
     const params = new URLSearchParams()
     params.append('url', url)
 
