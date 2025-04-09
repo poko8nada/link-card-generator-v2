@@ -1,5 +1,5 @@
 import { ogpDataInitial } from '@/app/config/initials'
-import LinkCardTypeA from '@/features/link-card-typeA'
+import DisplayCardAndCode from '@/features/display-card-and-code'
 import getOwnBaseUrl from '@/lib/getOwnBaseUrl'
 import { headers } from 'next/headers'
 
@@ -34,8 +34,8 @@ export default async function Home({
   console.log(data)
 
   return (
-    <div className='p-4'>
-      <LinkCardTypeA data={data} />
+    <div className='p-4 max-w-[1200px] w-full'>
+      <DisplayCardAndCode type='A' data={data} />
     </div>
   )
 }
