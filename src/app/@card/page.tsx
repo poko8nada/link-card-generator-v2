@@ -1,4 +1,4 @@
-import { ogpDataInitial } from '@/app/config/initials'
+import { ogpDataInitial } from '@/config/initials'
 import DisplayCardAndCode from '@/features/display-card-and-code'
 import getOwnBaseUrl from '@/lib/getOwnBaseUrl'
 import { headers } from 'next/headers'

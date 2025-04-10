@@ -1,4 +1,4 @@
-import type { OGPDataInitial } from '@/app/config/initials'
+import type { OGPDataInitial } from '@/config/initials'
 
 type CodeString = {
   [key: string]: (data: OGPDataInitial) => string

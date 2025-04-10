@@ -1,5 +1,5 @@
-import { DEFAULT_IMAGE } from '@/app/config/default-image-string'
-import { ogpDataInitial } from '@/app/config/initials'
+import { DEFAULT_IMAGE } from '@/config/default-image-string'
+import { ogpDataInitial } from '@/config/initials'
 import { JSDOM } from 'jsdom'
 import { type NextRequest, NextResponse } from 'next/server'
 

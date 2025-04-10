@@ -1,7 +1,7 @@
-import { codeStrings, styleStrings } from '@/app/config/card-strings'
-import type { OGPDataInitial } from '@/app/config/initials'
 import CodeBlock from '@/components/code-block'
 import HtmlStringRender from '@/components/html-string-render'
+import { codeStrings, styleStrings } from '@/config/card-strings'
+import type { OGPDataInitial } from '@/config/initials'
 
 export default function DisplayCardAndCode({
   type = 'A',
