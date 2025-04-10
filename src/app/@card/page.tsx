@@ -34,13 +34,15 @@ export default async function Page({
   console.log(data)
 
   return (
-    <div className='p-4 w-full mx-auto'>
+    <div className='w-full mx-auto'>
       {data.error.length > 0 ? (
-        <div className='text-red-500 text-lg font-bold'>
+        <div className='text-red-500 text-lg font-bold grid place-items-center h-40'>
           <p className='text-center'>error : {data.error[0]}</p>
         </div>
       ) : (
-        <DisplayCardAndCode type='A' data={data} />
+        <div className='p-4'>
+          <DisplayCardAndCode type='A' data={data} />
+        </div>
       )}
     </div>
   )

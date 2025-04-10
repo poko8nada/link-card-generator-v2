@@ -45,7 +45,7 @@ export default function SearchForm() {
   return (
     <form
       action={action}
-      className='flex items-start justify-between w-full max-w-2xl p-2 mx-auto gap-3'
+      className='flex items-start justify-between w-full max-w-2xl p-2 gap-3 mx-auto'
     >
       <SearchInput url={state.url} error={state.error} />
       <SubmitBtn type='submit' />
