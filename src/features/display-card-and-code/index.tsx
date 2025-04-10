@@ -10,7 +10,7 @@ export default function DisplayCardAndCode({
   const code = codeStrings[type]
   const style = styleStrings[type]
   return (
-    <div className='flex flex-col gap-4 items-center '>
+    <div className='flex flex-col gap-8 items-center justify-center '>
       <HtmlStringRender code={code(data)} styles={style} />
       <CodeBlock code={code(data)} styles={style} />
     </div>

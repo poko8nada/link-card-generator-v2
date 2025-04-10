@@ -9,7 +9,7 @@ export default async function Page({
 }) {
   const url = (await searchParams.url) || null
   if (!url) {
-    return <h1 className='text-2xl font-bold'>No URL provided</h1>
+    return null
   }
 
   const headersData = await headers()
@@ -33,7 +33,7 @@ export default async function Page({
   console.log(data)
 
   return (
-    <div className='p-4 max-w-[1200px] w-full'>
+    <div className='p-4 w-full mx-auto'>
       {data.error.length > 0 ? (
         <div className='text-red-500 text-lg font-bold'>
           <p className='text-center'>error : {data.error[0]}</p>

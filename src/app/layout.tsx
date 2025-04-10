@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import Footer from '@/components/footer'
+import { GridPattern } from '@/components/magicui/grid-pattern'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,11 +33,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {search}
-        <div className='flex flex-col items-center justify-center w-full min-h-screen'>
-          {card}
-          {children}
+        <div className='min-h-[calc(100dvh-40px-20px)]'>
+          {search}
+          <div className='flex flex-col items-center w-full mx-auto'>
+            <div className='relative w-full min-h-40'>
+              <GridPattern className='border' width={20} height={20} />
+              {card}
+            </div>
+            {children}
+          </div>
         </div>
+        <Footer />
       </body>
     </html>
   )
