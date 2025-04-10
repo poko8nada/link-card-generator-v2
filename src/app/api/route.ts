@@ -1,3 +1,4 @@
+import { DEFAULT_IMAGE } from '@/app/config/default-image-string'
 import { ogpDataInitial } from '@/app/config/initials'
 import { JSDOM } from 'jsdom'
 import { type NextRequest, NextResponse } from 'next/server'
@@ -20,6 +21,7 @@ const resolveURL = (href: string, base: string) => {
 const extractFavicon = (doc: Document, base: string) => {
   const selectors = [
     'link[rel="apple-touch-icon"]',
+    'link[rel="apple-touch-icon-precomposed"]',
     'link[rel="icon"]',
     'link[rel="shortcut icon"]',
   ]
@@ -31,6 +33,31 @@ const extractFavicon = (doc: Document, base: string) => {
 
   return `https://www.google.com/s2/favicons?domain=${new URL(base).host}`
 }
+const extractImage = (doc: Document, base: string) => {
+  const imgSelectors = [
+    'meta[property="og:image"]',
+    'meta[name="image"]',
+    'meta[property="twitter:image"]',
+    'meta[name="twitter:image"]',
+  ]
+
+  for (const sel of imgSelectors) {
+    const href = doc.querySelector(sel)?.getAttribute('content')
+    if (href) return resolveURL(href, base)
+  }
+
+  const selectors = [
+    'link[rel="apple-touch-icon"]',
+    'link[rel="apple-touch-icon-precomposed"]',
+  ]
+
+  for (const sel of selectors) {
+    const href = doc.querySelector(sel)?.getAttribute('href')
+    if (href) return resolveURL(href, base)
+  }
+
+  return null
+}
 
 const parseOGP = (doc: Document, url: string) => {
   const base = `https://${new URL(url).host}`
@@ -39,16 +66,18 @@ const parseOGP = (doc: Document, url: string) => {
     title:
       safeGetAttr(doc, 'meta[property="og:title"]', 'content') ||
       safeGetAttr(doc, 'meta[name="title"]', 'content') ||
+      doc.title ||
       'No title available',
     description:
       safeGetAttr(doc, 'meta[property="og:description"]', 'content') ||
       safeGetAttr(doc, 'meta[name="description"]', 'content') ||
       'No description available',
     image:
-      safeGetAttr(doc, 'meta[property="og:image"]', 'content') ||
-      safeGetAttr(doc, 'meta[name="image"]', 'content') ||
+      // safeGetAttr(doc, 'meta[property="og:image"]', 'content') ||
+      // safeGetAttr(doc, 'meta[name="image"]', 'content') ||
+      extractImage(doc, base) ||
       safeGetAttr(doc, '#imgTagWrapperId img', 'src') ||
-      '/default-image.png',
+      DEFAULT_IMAGE,
     favicon: extractFavicon(doc, base),
     hostname: new URL(url).host,
     hostLink: base,
@@ -58,6 +87,19 @@ const parseOGP = (doc: Document, url: string) => {
 }
 
 export async function GET(request: NextRequest) {
+  const origin = request.headers.get('origin')
+  const host = request.headers.get('host')
+
+  // (nullの場合は同一オリジンとみなす - 開発環境の動作に対応)
+  if (origin && origin !== `http://${host}` && origin !== `https://${host}`) {
+    return new Response(JSON.stringify({ error: 'Access denied' }), {
+      status: 403,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+
   const url = request.nextUrl.searchParams.get('url')
   if (!url) return new Response(null, { status: 400 })
 
