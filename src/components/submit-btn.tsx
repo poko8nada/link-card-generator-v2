@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { LoaderCircle } from 'lucide-react'
 import { useFormStatus } from 'react-dom'
 
 export function SubmitBtn({ ...props }) {
@@ -11,7 +12,7 @@ export function SubmitBtn({ ...props }) {
       className='w-full max-w-[100px]'
       {...props}
     >
-      {pending ? 'Loading...' : 'Search'}
+      {pending ? <LoaderCircle className='animate-spin' /> : 'Search'}
     </Button>
   )
 }
