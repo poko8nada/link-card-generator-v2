@@ -31,7 +31,7 @@ export default async function Page({
     return res.json()
   })
 
-  console.log(data)
+  // console.log(data)
 
   return (
     <div className='w-full mx-auto'>
