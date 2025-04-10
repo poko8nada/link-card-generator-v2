@@ -1,5 +1,5 @@
+import { siteMetadata } from '@/config/site-metadata'
 import ServiceInfo from '@/features/service-info'
-// app/page.tsx
 import type { Metadata } from 'next'
 
 export async function generateMetadata({
@@ -21,10 +21,12 @@ export async function generateMetadata({
       title: `${siteTitle} の検索結果 | Blog Card Maker`,
       description: `「${siteTitle}」のOGP情報をもとに作成されたリンクカードのプレビューです。`,
       url: `https://link-card-generator-v2.vercel.app/?url=${encodeURIComponent(decodedUrl)}`,
+      images: [{ ...siteMetadata.openGraph.images[0] }],
     },
     twitter: {
       title: `${siteTitle} の検索結果 | Blog Card Maker`,
       description: `「${siteTitle}」のOGP情報をもとに作成されたリンクカードのプレビューです。`,
+      images: [siteMetadata.twitter.images[0]],
     },
   }
 }

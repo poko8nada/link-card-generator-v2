@@ -87,31 +87,47 @@ const parseOGP = (doc: Document, url: string) => {
 }
 
 export async function GET(request: NextRequest) {
-  const origin = request.headers.get('origin')
-  const host = request.headers.get('host')
+  const requestOrigin = request.headers.get('origin')
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'https://link-card-generator-v2.vercel.app',
+  ]
 
-  // (nullの場合は同一オリジンとみなす - 開発環境の動作に対応)
-  if (origin && origin !== `http://${host}` && origin !== `https://${host}`) {
+  const allowedOrigin =
+    allowedOrigins.find(origin => requestOrigin?.startsWith(origin)) || null
+
+  console.log(requestOrigin, allowedOrigin)
+
+  // オリジンが存在し、許可されたものでなければアクセスを拒否
+  // (requestOriginがnullの場合は同一オリジンからのリクエストなので許可)
+  if (requestOrigin && !allowedOrigin) {
     return new Response(JSON.stringify({ error: 'Access denied' }), {
       status: 403,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     })
   }
 
   const url = request.nextUrl.searchParams.get('url')
   if (!url) return new Response(null, { status: 400 })
 
+  const headers = new Headers()
+  if (requestOrigin && allowedOrigin) {
+    headers.set('Access-Control-Allow-Origin', allowedOrigin)
+    headers.set('Access-Control-Allow-Methods', 'GET')
+  }
+
   try {
     const dom = await JSDOM.fromURL(url)
     const ogpData = parseOGP(dom.window.document, url)
-    return NextResponse.json(ogpData)
+    return NextResponse.json(ogpData, { headers })
   } catch (error) {
     console.error('Error fetching OGP:', error)
-    return NextResponse.json({
-      ...ogpDataInitial,
-      error: ['Failed to fetch OGP data'],
-    })
+    return NextResponse.json(
+      {
+        ...ogpDataInitial,
+        error: ['Failed to fetch OGP data'],
+      },
+      { headers },
+    )
   }
 }
